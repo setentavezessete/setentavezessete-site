@@ -235,7 +235,7 @@ function HorizontalPlayerStack({ apiKey, playlistId1, playlistId2 }) {
         }
     }, [apiKey, playlistId1, playlistId2]);
 
-    const playerOptionsH = { playerVars: { playsinline: 1, controls: 0, rel: 0, modestbranding: 1, fs: 0, iv_load_policy: 3, origin: typeof window !== 'undefined' ? window.location.origin } };
+    const playerOptionsH = { playerVars: { playsinline: 1, controls: 0, rel: 0, modestbranding: 1, fs: 0, iv_load_policy: 3, origin: typeof window !== 'undefined' ? window.location.origin: } };
     const stopTimelineUpdateH = useCallback(() => { if (intervalHRef.current) { clearInterval(intervalHRef.current); intervalHRef.current = null; } }, []);
     const startTimelineUpdateH = useCallback(() => { stopTimelineUpdateH(); intervalHRef.current = setInterval(() => { try { if (isH1Ready && playerH1Ref.current?.getPlayerState && playerH1Ref.current.getPlayerState() === 1 && typeof playerH1Ref.current.getCurrentTime === 'function') { const time = playerH1Ref.current.getCurrentTime(); if (typeof time === 'number') setCurrentTimeH(time); if (durationH <= 0 && typeof playerH1Ref.current.getDuration === 'function') { const d = playerH1Ref.current.getDuration(); if (d > 0) setDurationH(d); } } } catch (e) { stopTimelineUpdateH(); } }, 500); }, [isH1Ready, durationH, stopTimelineUpdateH]);
     const onPlayerReadyH = useCallback((event, playerRefSetter, initialVolume, playerNum, readySetter) => { const player = event.target; playerRefSetter(player); readySetter(true); try { player.setVolume(initialVolume); player.setPlaybackRate(speedH); if (playerNum === 1 && typeof player.getDuration === 'function') { setTimeout(() => { try{ const d = player.getDuration(); if (d > 0) setDurationH(d); } catch(e){} }, 500); } } catch (e) {} }, [speedH]);
